@@ -1,0 +1,265 @@
+Группа 3138 Гутикова Наталья Урок 3
+========================================================================================
+Задание:
+1) запустить контейнер с БД, отличной от mariaDB, используя инструкции на сайте: https://hub.docker.com/
+2) добавить в контейнер hostname такой же, как hostname системы через переменную
+3) заполнить БД данными через консоль
+4) запустить phpmyadmin (в контейнере) и через веб проверить, что все введенные данные доступны
+
+Результатом работы будет: текст объяснения, листинг
+
+========================================================================================
+Объяснение:
+========================================================================================
+1)-3)
+1) запустить контейнер с БД, отличной от mariaDB, используя инструкции на сайте: https://hub.docker.com/
+2) добавить в контейнер hostname такой же, как hostname системы через переменную
+3) заполнить БД данными через консоль
+
+1. Проверка наличия докера на системе путем запроса версии.
+   Проверка списка существующих контейнеров. Проверка списка запущенных
+sudo docker --version
+sudo docker ps - a
+sudo docker ps
+
+2. Установка контейнера c базой данной Postgress. Проверка запуска контейнера
+sudo docker run --name test_db -e POSTGRES_PASSWORD=pgpwd123 -d postgres
+sudo docker ps
+
+3. Заходим внутрь контейнера с помощью exec 
+(для свободного выхода из контейнера без прекращения его работы по exit)
+sudo docker exec -it test_db bash
+
+4. Подключение к базе данных postgress
+psql -U postgres
+
+5. Просмотр баз данных
+\l
+
+6. Создание базы данных my_db. Просмотр баз данных через консоль
+create database my_db;
+\l
+
+7. Выход из среды работы postgress
+exit
+
+8. Выход из контейнера
+exit
+
+9. Остановка контейнера
+sudo docker stop имя_контейнера			- остановка контейнера		
+sudo docker stop $(sudo docker ps -a -q)	- остановка всех контейнеров
+
+10. Удаление контейнера
+sudo docker rm имя_контейнера			- удаление контейнера		
+sudo docker rm $(sudo docker ps -a -q)		- удаление всех контейнеров
+
+========================================================================================
+Листинг
+========================================================================================
+
+user@user-VirtualBox:~$ sudo docker --version
+Docker version 20.10.12, build 20.10.12-0ubuntu4
+user@user-VirtualBox:~$ sudo docker ps -a
+CONTAINER ID   IMAGE          COMMAND                  CREATED       STATUS                                   PORTS     NAMES
+09dd6f2ceaa4   722acca8f05a   "/bin/sh -c 'apt-get…"   6 weeks ago   Exited (100              ) 6 weeks ago             keen_chatelet
+user@user-VirtualBox:~$ sudo docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
+user@user-VirtualBox:~$ docker run --name test_db -e POSTGRES_PASSWORD=pgpwd123 -d postgres
+Unable to find image 'postgres:latest' locally
+latest: Pulling from library/postgres
+3f9582a2cbe7: Pull complete
+0d9d08fc1a1a: Pull complete
+ecae4ccb4d1b: Pull complete
+e75693e0d7a5: Pull complete
+1b6d5aead1a8: Pull complete
+f2aa67d9a6b2: Pull complete
+7a3ec0371e36: Pull complete
+704d9d1b662d: Pull complete
+a6e09efc43e8: Pull complete
+cb87a0a6528d: Pull complete
+3e290cb732cd: Pull complete
+d44d65eaede3: Pull complete
+0c2430d596bb: Pull complete
+Digest: sha256:50a96a21f2992518c2cb4601467cf27c7ac852542d8913c1872fe45cd6449947
+Status: Downloaded newer image for postgres:latest
+b78eb4c1ec67d471f2d4691b712e58e0a6ef5b5446e4ec6c15f83884564d4072
+user@user-VirtualBox:~$ ^C
+user@user-VirtualBox:~$ user@user-VirtualBox:~$ sudo docker --version
+Docker version 20.10.12, build 20.10.12-0ubuntu4
+user@user-VirtualBox:~$ sudo docker ps -a
+CONTAINER ID   IMAGE          COMMAND                  CREATED       STATUS                                   PORTS     NAMES
+09dd6f2ceaa4   722acca8f05a   "/bin/sh -c 'apt-get…"   6 weeks ago   Exited (100              ) 6 weeks ago             keen_chatelet
+user@user-VirtualBox:~$ sudo docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+user@user-VirtualBox:~$ docker run --name test_db POSTGRES_PASSWORD=pgpwd123 -d postgress
+docker: invalid reference format: repository name must be lowercase.
+See 'docker run --help'.
+user@user-VirtualBox:~$ docker run --name test_db POSTGRES_PASSWORD=pgpwd123 -d postgres
+docker: invalid reference format: repository name must be lowercase.
+See 'docker run --help'.
+user@user-VirtualBox:~$ docker run --name test_db -e POSTGRES_PASSWORD=pgpwd123 -d postgres
+Unable to find image 'postgres:latest' locally
+latest: Pulling from library/postgres
+3f9582a2cbe7: Pull complete
+0d9d08fc1a1a: Pull complete
+ecae4ccb4d1b: Pull complete
+e75693e0d7a5: Pull complete
+1b6d5aead1a8: Pull complete
+f2aa67d9a6b2: Pull complete
+7a3ec0371e36: Pull complete
+704d9d1b662d: Pull complete
+a6e09efc43e8: Pull complete
+cb87a0a6528d: Pull complete
+3e290cb732cd: Pull complete
+d44d65eaede3: Pull complete
+0c2430d596bb: Pull complete
+Digest: sha256:50a96a21f2992518c2cb4601467cf27c7ac852542d8913c1872fe45cd6449947
+Status: Downloaded newer image for postgres:latest
+b78eb4c1ec67d471f2d4691b712e58e0a6ef5b5446e4ec6c15f83884564d4072
+
+user@user-VirtualBox:~$ sudo docker ps -a
+CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS                                                PORTS      NAMES
+b78eb4c1ec67   postgres       "docker-entrypoint.s…"   4 minutes ago   Up 4 minutes                                          5432/tcp   test_db
+09dd6f2ceaa4   722acca8f05a   "/bin/sh -c 'apt-get…"   6 weeks ago     Exited (100) 6 weeks ag                           o              keen_chatelet
+
+user@user-VirtualBox:~$ sudo docker ps
+CONTAINER ID   IMAGE      COMMAND                  CREATED         STATUS         PORTS      NAMES
+b78eb4c1ec67   postgres   "docker-entrypoint.s…"   8 minutes ago   Up 8 minutes   5432/tcp   test_db
+
+ser@user-VirtualBox:~$ sudo docker exec -it b78e bash
+
+root@b78eb4c1ec67:/# psql -U postgres
+
+postgres-# \l
+                                                List of databases
+   Name    |  Owner   | Encoding |  Collate   |   Ctype    | ICU Locale | Locale Provider |   Access privileges
+-----------+----------+----------+------------+------------+------------+-----------------+-----------------------
+ postgres  | postgres | UTF8     | en_US.utf8 | en_US.utf8 |            | libc            |
+ template0 | postgres | UTF8     | en_US.utf8 | en_US.utf8 |            | libc            | =c/postgres          +
+           |          |          |            |            |            |                 | postgres=CTc/postgres
+ template1 | postgres | UTF8     | en_US.utf8 | en_US.utf8 |            | libc            | =c/postgres          +
+           |          |          |            |            |            |                 | postgres=CTc/postgres
+(3 rows)
+
+
+postgres=# create database my_db;
+CREATE DATABASE
+postgres=# \l
+                                                List of databases
+   Name    |  Owner   | Encoding |  Collate   |   Ctype    | ICU Locale | Locale Provider |   Access privileges
+-----------+----------+----------+------------+------------+------------+-----------------+-----------------------
+ my_db     | postgres | UTF8     | en_US.utf8 | en_US.utf8 |            | libc            |
+ postgres  | postgres | UTF8     | en_US.utf8 | en_US.utf8 |            | libc            |
+ template0 | postgres | UTF8     | en_US.utf8 | en_US.utf8 |            | libc            | =c/postgres          +
+           |          |          |            |            |            |                 | postgres=CTc/postgres
+ template1 | postgres | UTF8     | en_US.utf8 | en_US.utf8 |            | libc            | =c/postgres          +
+           |          |          |            |            |            |                 | postgres=CTc/postgres
+(4 rows)
+
+postgres=#
+
+
+postgres=# exit
+root@b78eb4c1ec67:/# exit
+exit
+user@user-VirtualBox:
+
+========================================================================================
+4) запустить phpmyadmin (в контейнере) и через веб проверить, что все введенные данные доступны
+========================================================================================
+Описание
+========================================================================================
+Запуск контейнера
+sudo docker run --name testPHP -p 8081:80 -d phpmyadmin/phpmyadmin
+
+Проверка запуска контейнера
+sudo docker ps
+
+Развернуть Mozilla. В адресной строке набрать localhost:8081 
+убедиться в прогрузке страницы phpmyadmin
+
+========================================================================================
+Листинг
+========================================================================================
+user@user-VirtualBox:~$ sudo docker run --name testPHP -p 8081:80 -d phpmyadmin/phpmyadmin
+Unable to find image 'phpmyadmin/phpmyadmin:latest' locally
+latest: Pulling from phpmyadmin/phpmyadmin
+01b5b2efb836: Pull complete
+45244a9928d1: Pull complete
+139d4815e950: Pull complete
+9a420fd884ad: Pull complete
+1de46a46cfcd: Pull complete
+9cc46e699e97: Pull complete
+9a8d67ebc9db: Pull complete
+f9464a3489e8: Pull complete
+5fececf0d356: Pull complete
+6dd28e697cc8: Pull complete
+b38a56ab5f21: Pull complete
+ca91e5a7ae8b: Pull complete
+185f934955ec: Pull complete
+a077202948ae: Pull complete
+1f511389296f: Pull complete
+335d8ddb8d9f: Pull complete
+68f3e41ea3a9: Pull complete
+a28d69dfa6d4: Pull complete
+Digest: sha256:0d951ee3bec76c5d7083122f5db509ebfa6c209efc5e70f1d47af2e13a34f543
+Status: Downloaded newer image for phpmyadmin/phpmyadmin:latest
+
+user@user-VirtualBox:~$ sudo docker ps
+CONTAINER ID   IMAGE                   COMMAND                  CREATED              STATUS              PORTS                                   NAMES
+411afd088068   phpmyadmin/phpmyadmin   "/docker-entrypoint.…"   About a minute ago   Up About a minute   0.0.0.0:8081->80/tcp, :::8081->80/tcp   testPHP
+b78eb4c1ec67   postgres                "docker-entrypoint.s…"   8 hours ago          Up 8 hours          5432/tcp  
+
+========================================================================================
+Останов контейнеров
+========================================================================================
+
+CONTAINER ID   IMAGE                   COMMAND                  CREATED              STATUS              PORTS                                                                                            NAMES
+411afd088068   phpmyadmin/phpmyadmin   "/docker-entrypoint.…"   About a minute ago   Up About a minute   0.0.0.0:8081->80/tcp, :::8081->80/tcp   testPHP
+b78eb4c1ec67   postgres                "docker-entrypoint.s…"   8 hours ago          Up 8 hours          5432/tcp                                test_db
+
+user@user-VirtualBox:~$ sudo docker stop 411afd088068
+411afd088068
+user@user-VirtualBox:~$ sudo docker ps
+CONTAINER ID   IMAGE      COMMAND                  CREATED       STATUS       PORTS      NAMES
+b78eb4c1ec67   postgres   "docker-entrypoint.s…"   9 hours ago   Up 9 hours   5432/tcp   test_db
+
+user@user-VirtualBox:~$ sudo docker stop b78eb4c1ec67
+b78eb4c1ec67
+
+user@user-VirtualBox:~$ sudo docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
+
+========================================================================================
+Настройка взаимодействия контейнеров
+========================================================================================
+Описание
+========================================================================================
+Стратуем контейнер с test_db 
+sudo docker start
+
+Настраиваем связь двух контейнеров
+sudo docker run --name testPHP2 -d --link test_db -p 8081:80 phpmyadmin/phpmyadmin
+
+========================================================================================
+Листинг
+========================================================================================
+user@user-VirtualBox:~$ sudo docker start test_db
+test_db
+
+user@user-VirtualBox:~$ sudo docker ps
+CONTAINER ID   IMAGE      COMMAND                  CREATED       STATUS          PORTS      NAMES
+b78eb4c1ec67   postgres   "docker-entrypoint.s…"   9 hours ago   Up 11 seconds   5432/tcp   test_db
+
+user@user-VirtualBox:~$ sudo docker run --name testPHP2 -d --link test_db -p 8081:80 phpmyadmin/phpmyadmin
+cb25fda366e3cc54491bbd06dee587fba387e5911b8a5fa77b9c8e035de5650f
+user@user-VirtualBox:~$ sudo docker ps
+CONTAINER ID   IMAGE                   COMMAND                  CREATED         STATUS         PORTS                                   NAMES
+cb25fda366e3   phpmyadmin/phpmyadmin   "/docker-entrypoint.…"   5 minutes ago   Up 5 minutes   0.0.0.0:8081->80/tcp, :::8081->80/tcp   testPHP2
+b78eb4c1ec67   postgres                "docker-entrypoint.s…"   9 hours ago     Up 8 minutes   5432/tcp                                test_db
+user@user-VirtualBox:~$
+
+========================================================================================
